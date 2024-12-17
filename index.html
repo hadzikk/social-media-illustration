@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Illustration</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        * {
+            font-family: "Nunito", sans-serif;
+        }
+
+        .grid-container {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .grid-item {
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the image covers the entire area */
+        }
+
+        .grid-item .author {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 20px;
+        }
+
+        .navigation {
+            position: fixed;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            gap: 10px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+        }
+
+        .navigation .card {
+            width: 250px;
+            height: 250px;
+            background: #fff;
+            box-shadow: 1px 1px 5px #000;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title {
+            font-weight: bold;
+            color: #fff;
+            font-size: 11px;
+        }
+
+        .info {
+            color: #fff;
+            font-size: 9px;
+        }
+
+        /* Hide the original input file */
+        input[type="file"] {
+            display: none;
+        }
+
+        label.custom-file-input {
+            border-radius: 5px;
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        #icon {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container" id="gridContainer">
+        <!-- Grid items will be dynamically generated here -->
+    </div>
+
+    <div class="navigation">
+        <div class="card">
+            <label class="custom-file-input" data-client="Client 1">
+                <p id="icon"><i class="fa-solid fa-display"></i></p>
+                <p>Upload an image file from Client 1</p>
+                <input type="file" onchange="addImageToGrid(event)">
+            </label>
+        </div>
+
+        <div class="card">
+            <label class="custom-file-input" data-client="Client 2">
+                <p id="icon"><i class="fa-solid fa-display"></i></p>
+                <p>Upload an image file from Client 2</p>
+                <input type="file" onchange="addImageToGrid(event)">
+            </label>
+        </div>
+
+        <div class="card">
+            <label class="custom-file-input" data-client="Client 3">
+                <p id="icon"><i class="fa-solid fa-display"></i></p>
+                <p>Upload an image file from Client 3</p>
+                <input type="file" onchange="addImageToGrid(event)">
+            </label>
+        </div>
+    </div>
+
+    <script>
+        // Function to dynamically add a grid-item with an image
+        function addImageToGrid(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            const client = event.target.closest('label').getAttribute('data-client'); // Get client info from the label
+
+            reader.onload = function(e) {
+                // Create a new grid-item div
+                const newGridItem = document.createElement('div');
+                newGridItem.classList.add('grid-item');
+
+                // Create an img element and set its src to the selected image
+                const newImage = document.createElement('img');
+                newImage.src = e.target.result;
+
+                // Create author information
+                const authorDiv = document.createElement('div');
+                authorDiv.classList.add('author');
+                const title = document.createElement('p');
+                title.classList.add('title');
+                title.innerText = 'Title';
+                const info = document.createElement('p');
+                info.classList.add('info');
+                info.innerText = `This picture was uploaded by ${client}`;
+
+                // Append the title and info to the author div
+                authorDiv.appendChild(title);
+                authorDiv.appendChild(info);
+
+                // Append the img and author to the new grid-item
+                newGridItem.appendChild(newImage);
+                newGridItem.appendChild(authorDiv);
+
+                // Append the new grid-item to the grid-container
+                const gridContainer = document.getElementById('gridContainer');
+                gridContainer.appendChild(newGridItem);
+            };
+
+            // If a file is selected, read it
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
